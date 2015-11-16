@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone.order.mapper.TOrderMapper" >
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+  <resultMap id="BaseResultMap" type="com.stone.order.model.TOrder" >
+    <id column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="time" property="time" />
+    <result column="last_time" property="lastTime" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="linkman" property="linkman" jdbcType="CHAR" />
+    <result column="phone" property="phone" jdbcType="CHAR" />
+    <result column="address" property="address" jdbcType="CHAR" />
+    <result column="pay_way" property="payWay" jdbcType="INTEGER" />
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="REAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="bill_title" property="billTitle" jdbcType="VARCHAR" />
+    <result column="bill_type" property="billType" jdbcType="INTEGER" />
+    <result column="express_id" property="expressId" jdbcType="VARCHAR" />
+    <result column="express_man" property="expressMan" jdbcType="VARCHAR" />
+    <result column="express_type" property="expressType" jdbcType="INTEGER" />
+    <result column="express_phone" property="expressPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, user_id, `time`,`last_time`, `status`, linkman, phone, address, pay_way, pay_status, pay_type, total, remark, 
+    bill_title, bill_type, express_id, express_man, express_type, express_phone
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.stone.order.model.TOrder" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+      <where>  
+        <if test="userId != null and userId != '' ">  
+            AND user_id = #{userId}   
+        </if>  
+        <if test="status != null and status != '' ">  
+             AND status = #{status}   
+        </if>  
+         <if test="phone != null and phone != '' ">  
+             AND phone = #{phone}   
+        </if>  
+    </where>    
+     ORDER BY order_id desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" flushCache="true" >
+    delete from t_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.stone.order.model.TOrder" useGeneratedKeys="true" keyProperty="orderId">
+    insert into t_order (order_id,user_id, `time`, 
+      `status`, linkman, phone, address, 
+      pay_way, total, remark, 
+      bill_title, bill_type, express_id, 
+      express_man, express_type, express_phone
+      )
+    values (#{orderId}, #{userId,jdbcType=INTEGER}, #{time,jdbcType=CHAR}, 
+      #{status,jdbcType=INTEGER}, #{linkman,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{address,jdbcType=CHAR}, 
+      #{payWay,jdbcType=INTEGER}, #{total,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}, 
+      #{billTitle,jdbcType=VARCHAR}, #{billType,jdbcType=INTEGER}, #{expressId,jdbcType=VARCHAR}, 
+      #{expressMan,jdbcType=VARCHAR}, #{expressType,jdbcType=INTEGER}, #{expressPhone,jdbcType=VARCHAR}
+      )
+      <!-- 
+      <selectKey resultType="int" keyProperty="orderId" order="AFTER">
+           SELECT LAST_INSERT_ID() as orderId;
+       </selectKey> 
+       -->
+  </insert>
+  <insert id="insertSelective" parameterType="com.stone.order.model.TOrder" flushCache="true" >
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      order_id,
+      user_id,
+      `time`,
+      `status`,
+      linkman,
+      phone,
+      address,
+      pay_way,
+      total,
+      remark,
+      bill_title,
+      bill_type,
+      express_id,
+      express_man,
+      express_type,
+      express_phone,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{orderId,jdbcType=INTEGER},
+      #{userId,jdbcType=INTEGER},
+      #{time,jdbcType=CHAR},
+      #{status,jdbcType=INTEGER},
+      #{linkman,jdbcType=CHAR},
+      #{phone,jdbcType=CHAR},
+      #{address,jdbcType=CHAR},
+      #{payWay,jdbcType=INTEGER},
+      #{total,jdbcType=REAL},
+      #{remark,jdbcType=VARCHAR},
+      #{billTitle,jdbcType=VARCHAR},
+      #{billType,jdbcType=INTEGER},
+      #{expressId,jdbcType=VARCHAR},
+      #{expressMan,jdbcType=VARCHAR},
+      #{expressType,jdbcType=INTEGER},
+      #{expressPhone,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  
+  <update id="updateStatusById" parameterType="com.stone.order.model.TOrder" flushCache="true" >
+    update t_order
+    set `last_time` = now(), status = #{status}
+    where order_id = #{orderId}
+  </update>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone.order.model.TOrder" flushCache="true" >
+    update t_order
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="linkman != null" >
+        linkman = #{linkman,jdbcType=CHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=CHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=CHAR},
+      </if>
+      <if test="payWay != null" >
+        pay_way = #{payWay,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=REAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="billTitle != null" >
+        bill_title = #{billTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="billType != null" >
+        bill_type = #{billType,jdbcType=INTEGER},
+      </if>
+      <if test="expressId != null" >
+        express_id = #{expressId,jdbcType=VARCHAR},
+      </if>
+      <if test="expressMan != null" >
+        express_man = #{expressMan,jdbcType=VARCHAR},
+      </if>
+      <if test="expressType != null" >
+        express_type = #{expressType,jdbcType=INTEGER},
+      </if>
+      <if test="expressPhone != null" >
+        express_phone = #{expressPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stone.order.model.TOrder" flushCache="true" >
+    update t_order
+    set user_id = #{userId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=CHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      linkman = #{linkman,jdbcType=CHAR},
+      phone = #{phone,jdbcType=CHAR},
+      address = #{address,jdbcType=CHAR},
+      pay_way = #{payWay,jdbcType=INTEGER},
+      total = #{total,jdbcType=REAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      bill_title = #{billTitle,jdbcType=VARCHAR},
+      bill_type = #{billType,jdbcType=INTEGER},
+      express_id = #{expressId,jdbcType=VARCHAR},
+      express_man = #{expressMan,jdbcType=VARCHAR},
+      express_type = #{expressType,jdbcType=INTEGER},
+      express_phone = #{expressPhone,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+</mapper>

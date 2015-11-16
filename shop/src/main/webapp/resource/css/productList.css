@@ -1,0 +1,6 @@
+#productList{
+	position:absolute; top:50px;left:100px; width:916px;height:600px;border:1px solid blue;
+}
+.product{
+	width:300;height:150px;border:1px solid red;background:white;float:left;margin:1;padding-top:20;
+}

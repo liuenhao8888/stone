@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com</groupId>
+    <artifactId>stone</artifactId>
+    <version>1.0</version>
+  </parent>
+  <artifactId>search</artifactId>
+  <packaging>war</packaging>
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://192.168.10.58:8080/manager/text</url>
+					<server>tomcat7</server>
+					<username>tomcat</username>
+					<password>111111</password>
+					<port>8080</port>
+					<path>/search</path>
+					<uriEncoding>UTF-8</uriEncoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+  <dependencies>
+  	<dependency>
+  		<groupId>com</groupId>
+  		<artifactId>stone-base</artifactId>
+  		<version>1.0</version>
+  	</dependency>
+  </dependencies>
+</project>

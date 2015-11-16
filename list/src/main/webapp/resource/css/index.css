@@ -1,0 +1,17 @@
+.main{
+	width:60%; border: solid green; text-align:right; 
+}
+
+#ctgDiv{
+	width:400px;height:200px;border:1px solid red; margin:auto auto; border:1px solid red; padding-left:20; 
+}
+.ctgItem{
+	width:80; float:left; text-align:left; cursor:pointer; padding-left:10; border:1px solid red; 
+}
+.ctgItem:hover {
+	text-decoration:underline;
+}
+#btnDiv{
+	width:80; text-align:left; cursor:pointer; padding-left:10; border:1px solid yellow; 
+	margin-top:50px;
+}

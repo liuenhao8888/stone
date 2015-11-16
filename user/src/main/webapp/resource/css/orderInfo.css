@@ -1,0 +1,10 @@
+.item{
+	width:700;height:250px;border:1px solid red;background:white;padding-top:20;margin:5;text-align:left;padding-left:5;
+}
+.title{
+	width:600;height:30px;border:1px solid red;background:white;padding-top:20;text-align:center;
+}
+
+.content{
+	width:600;height:150px;border:1px solid red;background:white;padding-top:20;text-align:left;
+}

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone.category.mapper.TCategoryTemplateMapper" >
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+  <resultMap id="BaseResultMap" type="com.stone.category.model.TCategoryTemplate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="order" property="order" jdbcType="INTEGER" />
+    <result column="value_order" property="valueOrder" jdbcType="INTEGER" />
+    <result column="format" property="format" jdbcType="INTEGER" />
+    <result column="options" property="options" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, category_id, `name`, `status`, `order`, value_order, format, `options`, `type`
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_category_template
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="selectByCategoryId" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" /> from t_category_template
+    where category_id = #{categoryId} ORDER BY type
+  </select>
+  
+   <select id="selectMaxValueOderByCategoryId" resultType="int"  parameterType="java.lang.Integer" >
+    SELECT  MAX(value_order) FROM t_category_template
+    WHERE category_id = #{categoryId}  AND type = 2
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" flushCache="true" >
+    delete from t_category_template
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.stone.category.model.TCategoryTemplate" flushCache="true" >
+    insert into t_category_template (category_id, `name`, 
+      `status`, `order`, value_order, format, `type`, 
+      `options`)
+    values ( #{categoryId,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, 
+      #{status,jdbcType=INTEGER}, #{order,jdbcType=INTEGER},
+      nextValueOrder(#{type},#{categoryId}),
+      #{format,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{options,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stone.category.model.TCategoryTemplate" flushCache="true" >
+    insert into t_category_template
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      category_id,
+      `name`,
+      `status`,
+      `order`,
+       `value_order`,
+      format,
+      `type`,
+      `options`,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      #{categoryId,jdbcType=INTEGER},
+      #{name,jdbcType=CHAR},
+      #{status,jdbcType=INTEGER},
+      #{order,jdbcType=INTEGER},
+      #{valueOrder,jdbcType=INTEGER},
+      #{format,jdbcType=INTEGER},
+      #{type,jdbcType=INTEGER},
+      #{options,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone.category.model.TCategoryTemplate" flushCache="true" >
+    update t_category_template
+    <set >
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="order != null" >
+        `order` = #{order,jdbcType=INTEGER},
+      </if>
+       <if test="format != null" >
+        format = #{format,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="options != null" >
+        `options` = #{options,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stone.category.model.TCategoryTemplate" flushCache="true" >
+    update t_category_template
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=CHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      `order` = #{order,jdbcType=INTEGER},
+       format = #{format,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
+      `options` = #{options,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <update id="updateValueOrderById" parameterType="com.stone.category.model.TCategoryTemplate" flushCache="true" >
+    	update t_category_template 
+   		set value_order = (value_order-1) 
+    	where category_id=#{categoryId} and value_order > #{valueOrder}
+  </update>
+</mapper>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone.user.mapper.TUserMapper">
+	<resultMap id="BaseResultMap" type="com.stone.user.model.TUser">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="CHAR" />
+		<result column="password" property="password" jdbcType="CHAR" />
+		<result column="realname" property="realname" jdbcType="CHAR" />
+		<result column="phone" property="phone" jdbcType="CHAR" />
+		<result column="email" property="email" jdbcType="CHAR" />
+		<result column="address" property="address" jdbcType="CHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="shop_id" property="shopId" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		user_id, username, `password`, realname, phone, email,
+		address, `status`,
+		`type`,`time`,shop_id
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_user
+		where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectUser" resultMap="BaseResultMap" parameterType="com.stone.user.model.TUser">
+		select
+		<include refid="Base_Column_List" />
+		from t_user
+		<where>
+			<if test="userId != null and userId != '' ">
+				AND user_id = #{userId}
+			</if>
+			<if test="username != null and username != '' ">
+				AND username = #{username}
+			</if>
+			<if test="password != null and password != '' ">
+				AND password = #{password}
+			</if>
+			<if test="status != null and status != '' ">
+				AND status = #{status}
+			</if>
+			<if test="status != null and status != '' ">
+				AND type = #{type}
+			</if>
+		</where>
+	</select>
+
+	<select id="select4login" resultMap="BaseResultMap"
+		parameterType="com.stone.user.model.TUser">
+		select
+		<include refid="Base_Column_List" />
+		from t_user 
+		where username = #{username} AND password = #{password}
+	</select>
+	
+	
+	<select id="getUserByUsername" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_user 
+		where username = #{username}
+	</select>
+
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="com.stone.user.model.TUser">
+		select
+		<include refid="Base_Column_List" />
+		from t_user
+		<where>
+			<if test="userId != null and userId != '' ">
+				AND user_id = #{userId}
+			</if>
+			<if test="username != null and username != '' ">
+				AND username = #{username}
+			</if>
+			<if test="password != null and password != '' ">
+				AND password = #{password}
+			</if>
+			<if test="status != null and status != '' ">
+				AND status = #{status}
+			</if>
+			<if test="status != null and status != '' ">
+				AND type = #{type}
+			</if>
+		</where>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_user
+		where user_id = #{userId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.stone.user.model.TUser"
+		useGeneratedKeys="true" keyProperty="userId">
+		insert into t_user (username,
+		`password`, realname,
+		phone, email, address, `status`,
+		`type`, `time`)
+		values (#{username,jdbcType=CHAR}, #{password,jdbcType=CHAR},
+		#{realname,jdbcType=CHAR},
+		#{phone,jdbcType=CHAR},
+		#{email,jdbcType=CHAR}, #{address,jdbcType=CHAR},
+		#{status,jdbcType=INTEGER},
+		#{type,jdbcType=INTEGER},
+		#{time,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.stone.user.model.TUser"
+		useGeneratedKeys="true" keyProperty="userId">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			username,
+			`password`,
+			realname,
+			phone,
+			email,
+			address,
+			`status`,
+			`type`,
+			`time`,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{username,jdbcType=CHAR},
+			#{password,jdbcType=CHAR},
+			#{realname,jdbcType=CHAR},
+			#{phone,jdbcType=CHAR},
+			#{email,jdbcType=CHAR},
+			#{address,jdbcType=CHAR},
+			#{status,jdbcType=INTEGER},
+			#{type,jdbcType=INTEGER},
+			#{time,jdbcType=TIMESTAMP},
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.stone.user.model.TUser">
+		update t_user
+		<set>
+			<if test="username != null">
+				username = #{username,jdbcType=CHAR},
+			</if>
+			<if test="password != null">
+				`password` = #{password,jdbcType=CHAR},
+			</if>
+			<if test="realname != null">
+				realname = #{realname,jdbcType=CHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=CHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=CHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=CHAR},
+			</if>
+			<if test="status != null">
+				`status` = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				`type` = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="time != null">
+				`time` = #{time,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.stone.user.model.TUser">
+		update t_user
+		set
+		username = #{username,jdbcType=CHAR},
+		`password` =
+		#{password,jdbcType=CHAR},
+		realname = #{realname,jdbcType=CHAR},
+		phone =
+		#{phone,jdbcType=CHAR},
+		email = #{email,jdbcType=CHAR},
+		address =
+		#{address,jdbcType=CHAR},
+		`status` = #{status,jdbcType=INTEGER},
+		`type`
+		= #{type,jdbcType=INTEGER},
+		`time` = #{time,jdbcType=TIMESTAMP}
+		where
+		user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	
+	
+<!-- 
+	<select id="getById" parameterType="int" resultMap="studentResultMap">
+select s.id s_id,
+s.name s_name,
+s.gender s_gender,
+s.major s_major,
+s.grade s_grade,
+t.id t_id,
+t.name t_name,
+t.gender t_gender,
+t.title t_title,
+t.research_area t_research_area
+from student s left join teacher t
+on s.supervisor_id = t.id
+where s.id=#{id}
+</select>
+<resultMap id="studentResultMap" type="Student">
+<id property="id" column="s_id"/>
+<result property="name" column="s_name"/>
+<result property="gender" column="s_gender"/>
+<result property="major"  column="s_major"/>
+<result property="grade"  column="s_grade"/>
+<association property="supervisor" javaType="Teacher"
+resultMap="supervisorResultMap"/>
+</resultMap>
+<resultMap id="supervisorResultMap" type="Teacher">
+<id property="id" column="t_id"/>
+<result property="name" column="t_name"/>
+<result property="gender" column="t_gender"/>
+<result property="researchArea" column="t_research_area"/>
+<result property="title" column="t_title"/>
+</resultMap>
+</mapper>
+ -->		
+ <!-- 
+  <resultMap type="Group" id="groupMap">  
+        <id property="id" column="id" />  
+        <result property="name" column="name" />  
+        <result property="createTime" column="createdate" />  
+    </resultMap>  
+  
+    <resultMap type="Group" id="groupUserMap" extends="groupMap">  
+        <collection property="users" ofType="User">  
+            <id property="id" column="userId" />  
+            <result property="name" column="userName" />  
+            <result property="password" column="password" />  
+            <result property="createTime" column="userCreateTime" />  
+        </collection>  
+    </resultMap>  
+  
+  
+    <select id="selectGroupUser" parameterType="Group"  
+        resultMap="groupUserMap">  
+        select u.id as userId,u.name as userName,  
+        u.password,u.createtime as userCreateTime,  
+        gi.id,gi.name,gi.createdate,gi.state from group_info gi left  
+        join user_group ug on gi.id=ug.group_id left join user u on  
+        uug.user_id=u.id  
+        <where>  
+            <if test="id != 0  ">gi.id=#{id}</if>  
+            <if test="name != null and name != ''">  
+                or gi.name = #{name}  
+            </if>  
+        </where>  
+    </select>  
+	 -->
+	 
+    <resultMap id="userRoleMap" type="com.stone.user.model.TUser" extends="BaseResultMap">  
+        <collection property="roleList" ofType="com.stone.security.model.TRole">  
+            <id property="id" column="id" />  
+            <result property="name" column="name" />  
+        </collection>  
+    </resultMap>  
+	 
+	 <select id="selectUserRole" parameterType="java.lang.String" resultMap="userRoleMap">  
+       select u.user_id,u.email,u.address,u.time,u.username,u.password,u.type,r.id,r.name 
+       from t_user u 
+       LEFT JOIN t_user_role ur on u.user_id=ur.user_id 
+       LEFT JOIN t_role r on ur.role_id=r.id
+	   WHERE u.username=#{username}
+	   limit 1
+    </select>  
+	 
+	 
+	 
+	 
+	 
+</mapper>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone.product.mapper.ProductMapper" >
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+  <resultMap id="BaseResultMap" type="com.stone.product.model.Product" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
+    <result column="t_c_id" property="cid" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="REAL" />
+    <result column="time" property="time" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="introduction" property="introduction" jdbcType="LONGVARCHAR" />
+    <result column="imgs" property="imgs" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByTCId" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from t_product where t_c_id =#{t_c_id}
+  </select>
+  <sql id="Base_Column_List" >
+    id, shop_id, t_c_id, title, price, `time`, `status`, imgs, introduction
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <select id="selectByCategoryID" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" /> from t_product
+    where t_c_id = #{cid}
+  </select>
+  
+  <select id="selectByProduct" resultMap="BaseResultMap"  parameterType="com.stone.product.model.Product" >
+    select  <include refid="Base_Column_List" /> from t_product
+    <where>  
+        <if test="cid != null and cid != '' ">  
+            AND t_c_id = #{cid, jdbcType=INTEGER}   
+        </if>  
+        <if test="shopId != null and shopId != '' ">  
+             AND shop_id = #{shopId, jdbcType=INTEGER}   
+        </if>  
+         <if test="status != null and status != '' ">  
+             AND status = #{status, jdbcType=INTEGER}   
+        </if>  
+    </where>    
+  </select>
+  
+   <select id="selectByShopID" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" /> from t_product
+    where shop_id = #{shopId}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" flushCache="true" >
+    delete from t_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.stone.product.model.Product" flushCache="true" useGeneratedKeys="true" keyProperty="id">
+    insert into t_product (shop_id, t_c_id, 
+      title, price, `status`, imgs, introduction
+      )
+    values (#{shopId,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, #{status,jdbcType=INTEGER},#{imgs},#{introduction}
+      )
+      <selectKey resultType="int" keyProperty="id" order="AFTER">
+           SELECT LAST_INSERT_ID() as id;
+       </selectKey> 
+  </insert>
+  <insert id="insertSelective" parameterType="com.stone.product.model.Product" flushCache="true" >
+    insert into t_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      shop_id,
+      t_c_id,
+      title,
+      price,
+      `time`,
+      `status`,
+      imgs, 
+      introduction
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      #{shopId,jdbcType=INTEGER},
+      #{cid,jdbcType=INTEGER},
+      #{title,jdbcType=VARCHAR},
+      #{price,jdbcType=REAL},
+      #{time,jdbcType=CHAR},
+      #{status,jdbcType=INTEGER},
+      #{imgs},
+      #{introduction}
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone.product.model.Product" flushCache="true" >
+    update t_product
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        t_c_id = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=REAL},
+      </if>
+      <if test="time != null" >
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+       <if test="imgs != null" >
+        imgs = #{imgs},
+      </if>
+       <if test="introduction != null" >
+        introduction = #{introduction},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stone.product.model.Product" flushCache="true" >
+    update t_product
+    set shop_id = #{shopId,jdbcType=INTEGER},
+      t_c_id = #{cid,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      price = #{price,jdbcType=REAL},
+      `time` = #{time,jdbcType=CHAR},
+      `status` = #{status,jdbcType=INTEGER},
+       imgs = #{imgs},
+       introduction = #{introduction}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

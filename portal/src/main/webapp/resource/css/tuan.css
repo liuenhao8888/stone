@@ -1,0 +1,16 @@
+#proDiv{
+	display:none;width:800px;height:400px;border:1px solid red;background:white;z-index:100;
+	position:absolute; text-align:left;
+}
+#proBtnDiv{
+	margin-top:10;
+}
+#proDivSubmit{
+	left:150; top: 150; 
+}
+#proDivCancel{
+	left:200; top: 150; 
+}
+table{
+	border:1;
+}

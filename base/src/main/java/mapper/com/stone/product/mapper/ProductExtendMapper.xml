@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone.product.mapper.ProductExtendMapper" >
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+  <resultMap id="BaseResultMap" type="com.stone.product.model.ProductExtend" >
+    <id column="product_id" property="productId" jdbcType="INTEGER" />
+    <id column="template_id" property="templateId" jdbcType="INTEGER" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    product_id, template_id, `value`
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.stone.product.model.ProductExtendKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product_extend
+    where product_id = #{productId,jdbcType=INTEGER}
+      and template_id = #{templateId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByProductId" resultType="map" parameterType="int" >
+    SELECT 
+    	ext.*, tem.id, tem.name, tem.format, tem.order, tem.options
+    FROM 
+    	t_product_extend ext 
+    INNER JOIN 
+    	t_category_template tem
+	ON 
+		ext.template_id=tem.id
+	WHERE 
+		product_id = #{productId}
+	ORDER BY 
+		`order`
+  </select>
+  
+  <delete id="deleteByProductId" parameterType="int" flushCache="true" >
+    delete from t_product_extend
+    where product_id = #{productId}
+  </delete>
+  
+  <insert id="insertList" parameterType="java.util.List" flushCache="true" >
+    insert into t_product_extend (product_id, template_id, `value`)
+    values 
+    <foreach collection="list" item="item" index="index" separator=","> 
+    	(#{item.productId}, #{item.templateId}, #{item.value})
+    </foreach> 
+  </insert>
+  
+  <update id="updateList" parameterType="java.util.List" flushCache="true" >
+    	<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+                update t_product_extend
+                <set>
+                  `value`= #{item.value}
+                </set>
+                where product_id = #{item.productId} and template_id = #{item.templateId} 
+         </foreach>
+  </update>
+  
+   <insert id="insert" parameterType="com.stone.product.model.ProductExtend" flushCache="true" >
+    insert into t_product_extend (product_id, template_id, `value`
+      )
+    values (#{productId,jdbcType=INTEGER}, #{templateId,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.stone.product.model.ProductExtend" flushCache="true" >
+    insert into t_product_extend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      product_id,
+      template_id,
+      `value`,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{productId,jdbcType=INTEGER},
+      #{templateId,jdbcType=INTEGER},
+      #{value,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone.product.model.ProductExtend" flushCache="true" >
+    update t_product_extend
+    <set >
+      <if test="value != null" >
+        `value` = #{value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=INTEGER}
+      and template_id = #{templateId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stone.product.model.ProductExtend" flushCache="true" >
+    update t_product_extend
+    set `value` = #{value,jdbcType=VARCHAR}
+    where product_id = #{productId,jdbcType=INTEGER}
+      and template_id = #{templateId,jdbcType=INTEGER}
+  </update>
+</mapper>

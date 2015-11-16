@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone.category.mapper.TCategoryMapper" >
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+  <resultMap id="BaseResultMap" type="com.stone.category.model.TCategory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="t_c_id" property="pid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  
+   <resultMap id="CategoryTreeMap" type="com.stone.category.model.CategoryTree" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="CHAR" />
+    <association property="subList" column="id" select="selectSublist4Tree" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, t_c_id, name, status
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPid" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" /> from t_category
+    where t_c_id = #{pid}
+  </select>
+   <select id="selectSublist" resultMap="BaseResultMap"  parameterType="java.lang.Integer">
+    select 
+    <include refid="Base_Column_List" />
+    from t_category
+    where t_c_id = #{pid}
+  </select>
+  <select id="selectSublist4Tree" resultMap="CategoryTreeMap"  parameterType="java.lang.Integer">
+    select 
+    id,name
+    from t_category
+    where t_c_id = #{pid}
+  </select>
+    <select id="selectSiblingById" resultMap="BaseResultMap"  parameterType="java.lang.Integer">
+    	select c1.* from t_category c1
+		INNER JOIN t_category c2 on c1.t_c_id = c2.t_c_id
+		where c2.id = #{id}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" flushCache="true" >
+    delete from t_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.stone.category.model.TCategory" flushCache="true" >
+    insert into t_category (t_c_id, `name`, 
+      `status`)
+    values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stone.category.model.TCategory" flushCache="true" >
+    insert into t_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      t_c_id,
+      `name`,
+      `status`,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      #{tCId,jdbcType=INTEGER},
+      #{name,jdbcType=CHAR},
+      #{status,jdbcType=INTEGER},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone.category.model.TCategory" flushCache="true" >
+    update t_category
+    <set >
+      <if test="tCId != null" >
+        t_c_id = #{tCId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stone.category.model.TCategory" flushCache="true" >
+    update t_category
+    set `name` = #{name}
+    where id = #{id}
+  </update>
+</mapper>

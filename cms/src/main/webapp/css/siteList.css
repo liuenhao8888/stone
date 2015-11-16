@@ -1,0 +1,22 @@
+.main{
+	position: absolute;width:90%;left:50;padding-bottom:20;
+	border: solid green;
+}
+.main .list{
+	position:relative;width:100%;float;left;padding: 20;
+	/**border: solid red;*/
+}
+.main .list .item{
+	position:relative;margin-top:10;font-size: 22;text-align: left;width:30%;float:left;
+	/**border: solid yellow;*/
+}
+.main .title{
+	position:relative;text-align:center;width:90%;font-size: 20;float;left;margin-top:10px;
+	/**border: solid red;*/
+}
+.main .title .ctgName{
+	font-size:26;
+}
+.main .title .rs{
+	position:relative;font-size:16;left:400;
+}

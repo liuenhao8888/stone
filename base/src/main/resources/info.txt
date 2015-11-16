@@ -1,0 +1,2 @@
+http://repository.sonatype.org
+http://www.mvnrepository.com

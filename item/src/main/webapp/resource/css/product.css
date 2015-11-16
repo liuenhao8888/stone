@@ -1,0 +1,22 @@
+#ctgDiv{
+	display:none;width:800px;height:400px;border:1px solid red;background:white;z-index:100;top:200;
+	position:absolute; text-align:left;
+}
+#ctgDivItems{
+	width:790px;height:250px;
+}
+.ctgItem{
+	width:150; height:50; float:left; text-align:left; cursor:pointer;border:1px solid green;padding:5;
+}
+.ctgItem:hover {
+	text-decoration:underline;
+}
+#proBtnDiv{
+	margin-top:10;float:left;
+}
+#ctgDivBack{
+	left:150; top: 150;
+}
+#ctgDivCancel{
+	left:200; top: 150;
+}
