@@ -2,7 +2,7 @@
 <something-else-entirely>
 	<proxool>
 		<alias>DBPool</alias>
-		<driver-url>jdbc:mysql://localhost:3306/stone?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true</driver-url>
+		<driver-url>jdbc:mysql://192.168.10.58:3306/stone?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true</driver-url>
 		<driver-class>com.mysql.jdbc.Driver</driver-class>
 		<driver-properties>
 			<property name="user" value="root" />
